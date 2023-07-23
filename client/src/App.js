@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import KaydedilenlerListesi from './Filmler/KaydedilenlerListesi';
+import { Switch, Route } from 'react-router-dom';
+import FilmListesi from './Filmler/FilmListesi';
+import Film from "./Filmler/Film"
 
 export default function App () {
   const [saved, setSaved] = useState([]); // Stretch: the ids of "saved" movies
@@ -14,6 +17,7 @@ export default function App () {
         .then(response => {
           // Bu kısmı log statementlarıyla çalışın
           // ve burdan gelen response'u 'movieList' e aktarın
+          setMovieList(response.data)
         })
         .catch(error => {
           console.error('Sunucu Hatası', error);
@@ -30,7 +34,16 @@ export default function App () {
     <div>
       <KaydedilenlerListesi list={[ /* Burası esnek */]} />
 
-      <div>Bu Div'i kendi Routelarınızla değiştirin</div>
+      <div>
+      <Switch>
+        <Route path="/filmler/:id">
+          <Film/>
+        </Route>
+        <Route path="/">
+          <FilmListesi movies={movieList}/>
+        </Route>
+      </Switch>
+      </div>
     </div>
   );
 }
